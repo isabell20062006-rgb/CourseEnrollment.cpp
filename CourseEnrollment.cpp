@@ -78,3 +78,119 @@ void EnrollmentSystem::printStudentInfo(string fullName, string email, courseTyp
     printCourse(course);
     cout << endl;
     cout << "Credit Hours:      " << credits << endl;
+    cout << fixed << setprecision(2);
+    cout << "Tuition Balance:   $" << calcTuition(credits) << endl;
+}
+
+int main () {
+    cout << fixed << setprecision(2);
+
+// Part 3: Welcome Banner Concatenation
+    string line = "=====================================";
+    string welcomeBanner = line + "STUDENT ENROLLMENT APPLICATION" + line;
+    cout << welcomeBanner << endl << endl;
+
+ // Part 3: string Type Operations
+    string firstName, lastName, fullName;
+    string emailUser, email;
+
+    cout << "Enter first name: ";
+    cin >> firstName;
+    cout << "Enter last name: ";
+    cin >> lastName;
+    fullName = firstName + " " + lastName;
+    cout << "Full Name Length: " << fullName.length() << " characters" << endl;
+
+    size_t spaceLocation = fullName.find(' ');
+    string extractedFirst = fullName.substr(0, spaceLocation);
+    cout << "Extracted First Name: " << extractedFirst << endl;
+
+    cout << "First Initial: " << fullName.at(0) << endl;
+    cout << "Space Character Position: Index " << fullName.find(' ') << endl;
+
+    cout << "Enter email username (e.g. jsmith): ";
+    cin >> emailUser;
+
+    if (!emailUser.empty()) {
+        email = emailUser;
+        email.insert(email.length(), "@sanjac.edu");
+        cout << "Generated Base Email: " << email << endl;
+
+        size_t typoPos = email.find("sanjac");
+        if (typoPos != string::npos) {
+            email.replace(typoPos, 6, "SanJack");
+            cout << "Corrected Email Profile: " << email << endl;
+        }
+
+        if (email.back() == '.' || email.back() == '!') {
+            email.erase(email.length() - 1, 1);
+            cout << "Sanitized Email Profile: " << email << endl;
+        }
+    }
+
+    string lastName2 = "Smith";
+    int comparison = lastName.compare(lastName2);
+    cout << "Comparing user last name (" << lastName << ") with benchmark (" << lastName2 << "):" << endl;
+    if (comparison < 0) {
+        cout << " -> " << lastName << " comes before " << lastName2 << " alphabetically." << endl;
+    } else if (comparison > 0) {
+        cout << " -> " << lastName << " comes after " << lastName2 << " alphabetically." << endl;
+    } else {
+        cout << " -> Both last names are an identical match." << endl;
+    }
+    cout << endl;
+
+    // Part 1: Enum operations
+    currentCourse = readCourse();
+    cout << "You selected: ";
+    printCourse(currentCourse);
+    cout << endl;
+
+    if (currentCourse < ART) {
+        currentCourse = static_cast<courseType>(currentCourse + 1);
+        cout << "Advanced course tracking status to next offering: ";
+        printCourse(currentCourse);
+        cout << endl;
+    } else {
+        cout << "Already at maximum threshold (ART). Cannot advance further." << endl;        
+    }
+
+    cout << "Listing all catalog track offerings: " << endl;
+    for (int i = ENGLISH; i <= ART; i++) {
+        cout << " - ";
+        printCourse(static_cast<courseType>(i));
+        cout << endl;
+    }
+
+    courseType trackOne = HISTORY;
+    courseType trackTwo = BIOLOGY;
+    cout << "Comparing course placements: " << endl;
+    if (trackOne < trackTwo) {
+        printCourse(trackTwo);
+        cout << " comes later in the curriculum sequence than ";
+        printCourse(trackOne);
+        cout << "." << endl;
+    } else if (trackTwo < trackOne) {
+        printCourse(trackOne);
+        cout << " comes later in the curriculum sequence than ";
+        printCourse(trackTwo);
+        cout << "." << endl;
+    }
+
+    // Part 2: Tuition
+    CreditHours hours;
+    StudentID sid = 10045;
+    cout << "Enter credit hours: ";
+    cin >> hours;
+
+    cout << "Calculated Course Tuition: $" << calcTuition(hours) << endl;
+
+    // Part 3: Summary Display
+    printStudentInfo(fullName, email, currentCourse, sid, hours);
+
+    // Part 4: Namespace Scope Resolution Demo
+    cout << "[Namespace Scope Resolution Verification]:" << endl;
+    cout << "Global initial application tracking node enum id code target value: " << EnrollmentSystem::currentCourse << endl;
+
+    return 0;
+}
